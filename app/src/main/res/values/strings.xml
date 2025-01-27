@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="user">Usuário</string>
+    <string name="password">Senha</string>
+    <string name="login">Entrar</string>
+    <string name="login_successful">Login bem-sucedido! ✅</string>
+    <string name="login_failed">Login falhou ❌</string>
+    <string name="back_to_login">Voltar para o Login</string>
+    <string name="validating">Validando...</string>
+    <string name="failed">Falha na validação</string>
+</resources>
