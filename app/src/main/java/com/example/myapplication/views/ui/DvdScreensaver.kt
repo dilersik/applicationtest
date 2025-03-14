@@ -52,12 +52,6 @@ fun MainScreenSaver(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             TextButton(onClick = {
-                viewModel.goToScreen(Screen.ScreenSaver)
-            }) {
-                Text("Dvd Screen Saver")
-            }
-
-            TextButton(onClick = {
                 viewModel.goToScreen(Screen.DateTimePicker)
             }) {
                 Text("Data/Hora Picker")

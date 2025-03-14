@@ -4,24 +4,30 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
 import android.widget.TimePicker
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import java.util.Calendar
 
@@ -29,53 +35,66 @@ import java.util.Calendar
 fun PopOverDateTimePicker(
     showDatePicker: Boolean,
     showTimePicker: Boolean,
-    initialDate: String? = null, // Default date value
-    initialTime: String? = null, // Default time value
-    minDate: Long? = null, // Minimum selectable date in milliseconds
-    maxDate: Long? = null, // Maximum selectable date in milliseconds
+    initialDate: String? = null,
+    initialTime: String? = null,
+    minDate: Long? = null,
+    maxDate: Long? = null,
     onDateTimeSelected: (String?) -> Unit,
     onDismissRequest: () -> Unit = {},
-    primaryColor: Color = Color.Blue, // Customizable primary color
-    secondaryColor: Color = Color.Gray // Customizable secondary color
+    primaryColor: Color = Color(0xFF6200EE),
+    secondaryColor: Color = Color(0xFFBDBDBD)
 ) {
     val selectedDate = remember { mutableStateOf(initialDate) }
     val selectedTime = remember { mutableStateOf(initialTime) }
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .background(Color.White, RoundedCornerShape(8.dp))
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+            modifier = Modifier.padding(16.dp)
         ) {
-            if (showDatePicker) {
-                Text("Select Date", color = primaryColor)
-                DatePicker(minDate, maxDate, selectedDate)
-            }
-            if (showTimePicker) {
-                Text("Select Time", color = primaryColor)
-                TimePicker(selectedTime)
-            }
-
-            Button(
-                onClick = { onDateTimeSelected("${selectedDate.value} ${selectedTime.value}") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
+            Column(
+                modifier = Modifier.padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Confirm", color = Color.White)
-            }
+                Text(
+                    text = "Select Date & Time",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = primaryColor,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
 
-            Box(modifier = Modifier.height(6.dp))
+                if (showDatePicker) {
+                    DatePicker(minDate, maxDate, selectedDate)
+                }
+                if (showTimePicker) {
+                    TimePicker(selectedTime)
+                }
 
-            Button(
-                onClick = { onDismissRequest() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = secondaryColor)
-            ) {
-                Text("Cancel", color = Color.White)
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(
+                        onClick = { onDateTimeSelected("${selectedDate.value} ${selectedTime.value}") },
+                        colors = ButtonDefaults.buttonColors(containerColor = primaryColor),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text("Confirm", color = Color.White)
+                    }
+
+                    Button(
+                        onClick = { onDismissRequest() },
+                        colors = ButtonDefaults.buttonColors(containerColor = secondaryColor),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text("Cancel", color = Color.White)
+                    }
+                }
             }
         }
     }
