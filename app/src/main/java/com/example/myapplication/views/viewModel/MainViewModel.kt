@@ -27,7 +27,7 @@ class MainViewModel @Inject constructor(
     private val _validationState = MutableStateFlow(ValidationState.LOADING)
     val validationState: StateFlow<ValidationState> = _validationState
 
-    private val _currentScreen = MutableStateFlow<Screen>(Screen.Login)
+    private val _currentScreen = MutableStateFlow<Screen>(Screen.Validation)
     val currentScreen: StateFlow<Screen> = _currentScreen
 
     private val _list: MutableStateFlow<List<Post>?> = MutableStateFlow(null)
@@ -67,7 +67,7 @@ class MainViewModel @Inject constructor(
         if (isLoginSuccessful) {
             getList()
             _validationState.value = ValidationState.SUCCESS
-            _currentScreen.value = Screen.ScreenSaver(_list.value ?: emptyList())
+            _currentScreen.value = Screen.ScreenSaver
         } else {
             _currentScreen.value = Screen.Login
         }

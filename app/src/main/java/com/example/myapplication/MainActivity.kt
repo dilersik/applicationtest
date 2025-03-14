@@ -58,13 +58,7 @@ fun AppContent(context: Context) {
 
             is Screen.Posts -> ListScreen(viewModel, paddingValues)
 
-            is Screen.ScreenSaver -> {
-                MainScreenSaver(
-                    viewModel,
-                    paddingValues,
-                    (currentScreen as Screen.ScreenSaver).posts
-                )
-            }
+            is Screen.ScreenSaver -> MainScreenSaver(viewModel, paddingValues)
 
             is Screen.DateTimePicker -> PopOverDateTimePicker(
                 showDatePicker = true,
@@ -76,11 +70,11 @@ fun AppContent(context: Context) {
                         Toast.makeText(
                             context,
                             "Selected date time: $selectedDateTime",
-                            Toast.LENGTH_SHORT
+                            Toast.LENGTH_LONG
                         ).show()
                     }
                 },
-                onDismissRequest = { viewModel.goToScreen(Screen.DateTimePicker) }
+                onDismissRequest = { viewModel.goToScreen(Screen.ScreenSaver) }
             )
 
         }

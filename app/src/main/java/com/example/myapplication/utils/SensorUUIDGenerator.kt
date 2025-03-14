@@ -1,13 +1,10 @@
 package com.example.myapplication.utils
 
-import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-import android.util.Base64
-import java.security.MessageDigest
 
 class SensorUUIDGenerator(private val sensorManager: SensorManager) : SensorEventListener {
 
@@ -18,7 +15,9 @@ class SensorUUIDGenerator(private val sensorManager: SensorManager) : SensorEven
         onUUIDGenerated = callback
         val sensors = listOf(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE)
         sensors.forEach { type ->
-            sensorManager.getDefaultSensor(type)?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL) }
+            sensorManager.getDefaultSensor(type)?.let {
+                sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+            }
         }
     }
 

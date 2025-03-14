@@ -1,12 +1,12 @@
 package com.example.myapplication.utils
 
-import java.security.Key
-import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
 import android.util.Base64
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
+import java.security.Key
 import java.security.SecureRandom
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
