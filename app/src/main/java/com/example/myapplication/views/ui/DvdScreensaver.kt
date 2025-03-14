@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -75,45 +76,59 @@ fun MainScreenSaver(
 
 @Composable
 fun DvdScreensaver(messages: List<String>) {
+    val boxSize = 140f
+    val velocity = 5f
     val positionX = remember { Animatable(100f) }
     val positionY = remember { Animatable(100f) }
     var directionX by remember { mutableFloatStateOf(1f) }
-    val directionY by remember { mutableFloatStateOf(1f) }
+    var directionY by remember { mutableFloatStateOf(1f) }
     var color by remember { mutableStateOf(Color.Blue) }
     var currentMessageIndex by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
         while (true) {
-            positionX.animateTo(positionX.value + (5 * directionX), animationSpec = tween(50))
-            positionY.animateTo(positionY.value + (5 * directionY), animationSpec = tween(50))
+            positionX.animateTo(positionX.value + (velocity * directionX), animationSpec = tween(50))
+            positionY.animateTo(positionY.value + (velocity * directionY), animationSpec = tween(50))
 
-            if (positionX.value <= 0 || positionX.value >= 300f) {
-                val triple = changeMessage(directionX, color, currentMessageIndex, messages)
-                color = triple.first
-                currentMessageIndex = triple.second
-                directionX = triple.third
+            val screenWidth = 300f // Substituir por um cálculo dinâmico
+            val screenHeight = 500f // Substituir por um cálculo dinâmico
+
+            if (positionX.value <= 0 || positionX.value + boxSize >= screenWidth) {
+                val result = changeMessage(directionX, directionY, currentMessageIndex, messages)
+                color = result.first
+                currentMessageIndex = result.second
+                directionX = result.third
             }
-            if (positionY.value <= 0 || positionY.value >= 500f) {
-                val triple = changeMessage(directionX, color, currentMessageIndex, messages)
-                color = triple.first
-                currentMessageIndex = triple.second
-                directionX = triple.third
+            if (positionY.value <= 0 || positionY.value + boxSize >= screenHeight) {
+                val result = changeMessage(directionX, directionY, currentMessageIndex, messages)
+                color = result.first
+                currentMessageIndex = result.second
+                directionY = result.fourth
             }
             delay(50L)
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val maxWidth = constraints.maxWidth.toFloat()
+        val maxHeight = constraints.maxHeight.toFloat()
+
         Box(
             modifier = Modifier
-                .size(140.dp)
+                .size(boxSize.dp)
                 .offset(x = positionX.value.dp, y = positionY.value.dp)
                 .background(color, shape = RoundedCornerShape(8.dp))
                 .clickable {
-                    val triple = changeMessage(directionX, color, currentMessageIndex, messages)
-                    color = triple.first
-                    currentMessageIndex = triple.second
-                    directionX = triple.third
+                    val result = changeMessage(
+                        directionX,
+                        directionY,
+                        currentMessageIndex,
+                        messages
+                    )
+                    color = result.first
+                    currentMessageIndex = result.second
+                    directionX = result.third
+                    directionY = result.fourth
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -127,15 +142,16 @@ fun DvdScreensaver(messages: List<String>) {
 
 private fun changeMessage(
     directionX: Float,
-    color: Color,
+    directionY: Float,
     currentMessageIndex: Int,
     messages: List<String>
-): Triple<Color, Int, Float> {
-    var directionX1 = directionX
-    var color1 = color
-    var currentMessageIndex1 = currentMessageIndex
-    directionX1 *= -1
-    color1 = Color(Random().nextInt(256), Random().nextInt(256), Random().nextInt(256))
-    currentMessageIndex1 = (currentMessageIndex1 + 1) % messages.size
-    return Triple(color1, currentMessageIndex1, directionX1)
+): Quadruple<Color, Int, Float, Float> {
+    val newDirectionX = directionX * -1
+    val newDirectionY = directionY * -1
+    val newColor = Color(Random().nextInt(256), Random().nextInt(256), Random().nextInt(256))
+    val newIndex = (currentMessageIndex + 1) % messages.size
+    return Quadruple(newColor, newIndex, newDirectionX, newDirectionY)
 }
+
+private data class Quadruple<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
+
