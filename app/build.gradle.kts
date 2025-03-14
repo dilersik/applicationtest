@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
 //    implementation(libs.androidx.security.crypto.ktx)
     implementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.biometric.ktx)
     kapt(libs.hilt.compiler)
     // implementation(libs.androidx.hilt.lifecycle.viewmodel)
     kapt(libs.androidx.hilt.compiler)

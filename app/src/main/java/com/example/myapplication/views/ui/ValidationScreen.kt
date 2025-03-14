@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.myapplication.R
 import com.example.myapplication.views.ValidationState
-import com.example.myapplication.views.viewModel.LoginViewModel
+import com.example.myapplication.views.viewModel.MainViewModel
 
 @Composable
-fun ValidationScreen(viewModel: LoginViewModel) {
+fun ValidationScreen(viewModel: MainViewModel) {
     val validationState by viewModel.validationState.collectAsState()
 
     LaunchedEffect(Unit) {
