@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -29,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.views.Screen
 import com.example.myapplication.views.viewModel.MainViewModel
@@ -84,22 +84,23 @@ fun DvdScreensaver(messages: List<String>) {
     var directionY by remember { mutableFloatStateOf(1f) }
     var color by remember { mutableStateOf(Color.Blue) }
     var currentMessageIndex by remember { mutableIntStateOf(0) }
+    val context = LocalContext.current
+    val displayMetrics = context.resources.displayMetrics
+    val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
+    val screenHeightDp = displayMetrics.heightPixels / displayMetrics.density
 
     LaunchedEffect(Unit) {
         while (true) {
             positionX.animateTo(positionX.value + (velocity * directionX), animationSpec = tween(50))
             positionY.animateTo(positionY.value + (velocity * directionY), animationSpec = tween(50))
 
-            val screenWidth = 300f // Substituir por um cálculo dinâmico
-            val screenHeight = 500f // Substituir por um cálculo dinâmico
-
-            if (positionX.value <= 0 || positionX.value + boxSize >= screenWidth) {
+            if (positionX.value <= 0 || positionX.value + boxSize >= screenWidthDp) {
                 val result = changeMessage(directionX, directionY, currentMessageIndex, messages)
                 color = result.first
                 currentMessageIndex = result.second
                 directionX = result.third
             }
-            if (positionY.value <= 0 || positionY.value + boxSize >= screenHeight) {
+            if (positionY.value <= 0 || positionY.value + boxSize >= screenHeightDp) {
                 val result = changeMessage(directionX, directionY, currentMessageIndex, messages)
                 color = result.first
                 currentMessageIndex = result.second
@@ -109,10 +110,7 @@ fun DvdScreensaver(messages: List<String>) {
         }
     }
 
-    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-        val maxWidth = constraints.maxWidth.toFloat()
-        val maxHeight = constraints.maxHeight.toFloat()
-
+    Box(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
                 .size(boxSize.dp)
