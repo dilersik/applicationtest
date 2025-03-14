@@ -59,14 +59,13 @@ class MainViewModel @Inject constructor(
     fun validateLogin() = viewModelScope.launch {
         _currentScreen.value = Screen.Validation
         _validationState.value = ValidationState.LOADING
-        delay(2L)
 
         val token = sharedPreferences.getString("token", null)
         val isLoginSuccessful = token != null
 
         if (isLoginSuccessful) {
             getList()
-            _validationState.value = ValidationState.SUCCESS
+            delay(2L)
             _currentScreen.value = Screen.ScreenSaver
         } else {
             _currentScreen.value = Screen.Login
