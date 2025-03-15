@@ -15,8 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.views.Screen
-import com.example.myapplication.views.ui.BiometricAuthScreen
 import com.example.myapplication.views.ui.ListScreen
+import com.example.myapplication.views.ui.LoginScreen
 import com.example.myapplication.views.ui.MainScreenSaver
 import com.example.myapplication.views.ui.PopOverDateTimePicker
 import com.example.myapplication.views.ui.ValidationScreen
@@ -50,7 +50,7 @@ fun AppContent(context: Context) {
     ) { paddingValues ->
 
         when (currentScreen) {
-            is Screen.Login -> BiometricAuthScreen(paddingValues) {
+            is Screen.Login -> LoginScreen (paddingValues) {
                 viewModel.onLogin(it)
             }
 
