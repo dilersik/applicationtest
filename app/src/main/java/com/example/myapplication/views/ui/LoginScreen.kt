@@ -1,7 +1,6 @@
 package com.example.myapplication.views.ui
 
 import android.hardware.SensorManager
-import android.os.Build
 import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -48,11 +47,20 @@ fun LoginScreen(paddingValues: PaddingValues, onAuthenticated: (String) -> Unit)
             }
         })
 
-    val promptInfo = remember {
+    val fingerprintPromptInfo = remember {
         BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Autenticação Biométrica")
-            .setSubtitle("Use sua digital ou rosto para autenticar")
+            .setTitle("Autenticação com Digital")
+            .setSubtitle("Use sua digital para autenticar")
             .setNegativeButtonText("Cancelar")
+            .build()
+    }
+
+    val facialRecognitionPromptInfo = remember {
+        BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Autenticação Facial")
+            .setSubtitle("Use o reconhecimento facial para autenticar")
+            .setNegativeButtonText("Cancelar")
+            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
             .build()
     }
 
@@ -60,7 +68,7 @@ fun LoginScreen(paddingValues: PaddingValues, onAuthenticated: (String) -> Unit)
         BiometricPrompt.PromptInfo.Builder()
             .setTitle("Autenticação com Senha do Dispositivo")
             .setSubtitle("Use PIN, senha ou padrão para autenticar")
-            .setDeviceCredentialAllowed(true)
+            .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL)
             .build()
     }
 
@@ -77,10 +85,10 @@ fun LoginScreen(paddingValues: PaddingValues, onAuthenticated: (String) -> Unit)
 
                 SensorUUIDGenerator(sensorManager).generateUUID { uuid ->
                     uuidState.value = uuid
-                    biometricPrompt.authenticate(promptInfo)
+                    biometricPrompt.authenticate(fingerprintPromptInfo)
                 }
             } else {
-                Toast.makeText(context, "Biometria não suportada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Leitor de digital não suportado", Toast.LENGTH_SHORT).show()
             }
         }) {
             Text("Login com Digital")
@@ -88,23 +96,23 @@ fun LoginScreen(paddingValues: PaddingValues, onAuthenticated: (String) -> Unit)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
-                biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL) ==
-                BiometricManager.BIOMETRIC_SUCCESS) {
-
-                SensorUUIDGenerator(sensorManager).generateUUID { uuid ->
-                    uuidState.value = uuid
-                    biometricPrompt.authenticate(promptInfo)
-                }
-            } else {
-                Toast.makeText(context, "Reconhecimento facial não suportado", Toast.LENGTH_SHORT).show()
-            }
-        }) {
-            Text("Login com Reconhecimento Facial")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
+//        Button(onClick = {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
+//                biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) ==
+//                BiometricManager.BIOMETRIC_SUCCESS) {
+//
+//                SensorUUIDGenerator(sensorManager).generateUUID { uuid ->
+//                    uuidState.value = uuid
+//                    biometricPrompt.authenticate(facialRecognitionPromptInfo)
+//                }
+//            } else {
+//                Toast.makeText(context, "Reconhecimento facial não suportado", Toast.LENGTH_SHORT).show()
+//            }
+//        }) {
+//            Text("Login com Reconhecimento Facial")
+//        }
+//
+//        Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
             if (biometricManager.canAuthenticate(BiometricManager.Authenticators.DEVICE_CREDENTIAL) ==
@@ -119,45 +127,6 @@ fun LoginScreen(paddingValues: PaddingValues, onAuthenticated: (String) -> Unit)
             }
         }) {
             Text("Login com Senha do Dispositivo")
-        }
-    }
-}
-
-
-@Composable
-fun BiometricAuthScreen(paddingValues: PaddingValues, onAuthenticated: (String) -> Unit) {
-    val context = LocalContext.current
-    val sensorManager = context.getSystemService(SensorManager::class.java)
-    val uuidState = remember { mutableStateOf("") }
-
-    val executor: Executor = ContextCompat.getMainExecutor(context)
-    val biometricPrompt = BiometricPrompt(
-        context as FragmentActivity,
-        executor, object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                onAuthenticated(uuidState.value)
-            }
-        })
-    val promptInfo = BiometricPrompt.PromptInfo.Builder()
-        .setTitle("Login Biométrico")
-        .setSubtitle("Autentique-se para continuar")
-        .setNegativeButtonText("Cancelar")
-        .build()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Button(onClick = {
-            SensorUUIDGenerator(sensorManager).generateUUID { uuid ->
-                uuidState.value = uuid
-                biometricPrompt.authenticate(promptInfo)
-            }
-        }) {
-            Text("Autenticar com Biometria")
         }
     }
 }
