@@ -3,8 +3,8 @@ package com.example.myapplication.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.myapplication.api.Api
-import com.example.myapplication.repository.MyListRepository
-import com.example.myapplication.repository.MyListRepositoryImpl
+import com.example.myapplication.repository.PostRepository
+import com.example.myapplication.repository.PostRepositoryImpl
 import com.example.myapplication.utils.EncryptionUtils
 import dagger.Module
 import dagger.Provides
@@ -29,7 +29,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMyListRepository(api: Api): MyListRepository = MyListRepositoryImpl(api)
+    fun provideMyListRepository(api: Api): PostRepository = PostRepositoryImpl(api)
 
     @Provides
     @Singleton

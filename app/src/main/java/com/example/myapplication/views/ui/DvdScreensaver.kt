@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.model.Post
 import com.example.myapplication.views.Screen
 import com.example.myapplication.views.viewModel.MainViewModel
 import kotlinx.coroutines.delay
@@ -40,6 +42,8 @@ fun MainScreenSaver(
     viewModel: MainViewModel,
     paddingValues: PaddingValues
 ) {
+    val isMock = viewModel.isMock.collectAsState().value
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,6 +55,12 @@ fun MainScreenSaver(
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+            TextButton(onClick = {
+                viewModel.setIsMock(!isMock)
+            }) {
+                Text(if (isMock) "Desativar Mock" else "Ativar Mock")
+            }
+
             TextButton(onClick = {
                 viewModel.goToScreen(Screen.DateTimePicker)
             }) {
@@ -64,7 +74,12 @@ fun MainScreenSaver(
             }
         }
 
-        DvdScreensaver(messages = viewModel.list.value?.map { it.title } ?: emptyList())
+        DvdScreensaver(messages = viewModel.list.value?.map {
+            when (it) {
+                is Post.Mock -> it.title
+                is Post.Remote -> it.title
+            }
+        } ?: emptyList())
     }
 }
 
@@ -85,8 +100,14 @@ fun DvdScreensaver(messages: List<String>) {
 
     LaunchedEffect(Unit) {
         while (true) {
-            positionX.animateTo(positionX.value + (velocity * directionX), animationSpec = tween(50))
-            positionY.animateTo(positionY.value + (velocity * directionY), animationSpec = tween(50))
+            positionX.animateTo(
+                positionX.value + (velocity * directionX),
+                animationSpec = tween(50)
+            )
+            positionY.animateTo(
+                positionY.value + (velocity * directionY),
+                animationSpec = tween(50)
+            )
 
             if (positionX.value <= 0 || positionX.value + boxSize >= screenWidthDp) {
                 val result = changeMessage(directionX, directionY, currentMessageIndex, messages)
@@ -124,6 +145,7 @@ fun DvdScreensaver(messages: List<String>) {
                 },
             contentAlignment = Alignment.Center
         ) {
+            currentMessageIndex = if (currentMessageIndex >= messages.size) 0 else currentMessageIndex
             Text(
                 modifier = Modifier.padding(10.dp),
                 text = messages[currentMessageIndex], color = Color.White,

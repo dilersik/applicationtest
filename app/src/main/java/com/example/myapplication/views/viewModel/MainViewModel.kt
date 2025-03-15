@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.Post
 import com.example.myapplication.model.ResultWrapper
-import com.example.myapplication.repository.MyListRepository
+import com.example.myapplication.repository.PostRepository
 import com.example.myapplication.views.Screen
 import com.example.myapplication.views.ValidationState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: MyListRepository,
+    private val repository: PostRepository,
     private val sharedPreferences: SharedPreferences
 ): ViewModel() {
 
@@ -33,6 +33,9 @@ class MainViewModel @Inject constructor(
     private val _list: MutableStateFlow<List<Post>?> = MutableStateFlow(null)
     val list = _list.asStateFlow()
 
+    private val _isMock = MutableStateFlow(false)
+    val isMock = _isMock.asStateFlow()
+
     init {
         viewModelScope.launch {
             getList()
@@ -40,7 +43,7 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun getList() {
-        repository.getList().let { result ->
+        repository.getList(_isMock.value).let { result ->
             if (result is ResultWrapper.Success) {
                 _list.value = result.value
             } else {
@@ -81,6 +84,13 @@ class MainViewModel @Inject constructor(
             remove("token")
         }
         _currentScreen.value = Screen.Login
+    }
+
+    fun setIsMock(isMock: Boolean) {
+        _isMock.value = isMock
+        viewModelScope.launch {
+            getList()
+        }
     }
 
 }

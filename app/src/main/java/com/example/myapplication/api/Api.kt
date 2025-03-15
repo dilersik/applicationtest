@@ -8,6 +8,6 @@ import javax.inject.Singleton
 interface Api {
 
     @GET("posts")
-    suspend fun getList(): List<Post>
+    suspend fun getList(): List<Post.Remote>
 
 }

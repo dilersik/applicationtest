@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.model.Post
 import com.example.myapplication.views.viewModel.MainViewModel
 
 @Composable
@@ -35,7 +36,17 @@ fun ListScreen(viewModel: MainViewModel, paddingValues: PaddingValues) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            items(list) { item ->
+            items(list) {
+                val title = when (it) {
+                    is Post.Mock -> it.title
+                    is Post.Remote -> it.title
+                }
+
+                val body = when (it) {
+                    is Post.Mock -> it.body
+                    is Post.Remote -> it.body
+                }
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -51,12 +62,12 @@ fun ListScreen(viewModel: MainViewModel, paddingValues: PaddingValues) {
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = item.title,
+                                text = title,
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.Black
                             )
                             Text(
-                                text = item.body,
+                                text = body,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Color.Gray
                             )
