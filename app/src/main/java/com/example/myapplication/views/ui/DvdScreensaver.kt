@@ -30,7 +30,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 import com.example.myapplication.model.Post
 import com.example.myapplication.views.Screen
 import com.example.myapplication.views.viewModel.MainViewModel
@@ -58,19 +61,19 @@ fun MainScreenSaver(
             TextButton(onClick = {
                 viewModel.setIsMock(!isMock)
             }) {
-                Text(if (isMock) "Desativar Mock" else "Ativar Mock")
+                Text(stringResource(if (isMock) R.string.disable_mock else R.string.enable_mock))
             }
 
             TextButton(onClick = {
                 viewModel.goToScreen(Screen.DateTimePicker)
             }) {
-                Text("Data/Hora Picker")
+                Text(stringResource(R.string.select_date_time))
             }
 
             TextButton(onClick = {
                 viewModel.logout()
             }) {
-                Text("Logout")
+                Text(stringResource(R.string.logout), style = TextStyle(color = Color.Red))
             }
         }
 
@@ -145,7 +148,8 @@ fun DvdScreensaver(messages: List<String>) {
                 },
             contentAlignment = Alignment.Center
         ) {
-            currentMessageIndex = if (currentMessageIndex >= messages.size) 0 else currentMessageIndex
+            currentMessageIndex =
+                if (currentMessageIndex >= messages.size) 0 else currentMessageIndex
             Text(
                 modifier = Modifier.padding(10.dp),
                 text = messages[currentMessageIndex], color = Color.White,

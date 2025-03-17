@@ -8,4 +8,23 @@
     <string name="back_to_login">Voltar para o Login</string>
     <string name="validating">Validando...</string>
     <string name="failed">Falha na validação</string>
+    <string name="my_app">My App</string>
+    <string name="selected_date_time">Data/Hora selecionado: %1$s</string>
+    <string name="pick_date">Selecione Data</string>
+    <string name="pick_time">Selecione Hora</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select_date_time">Selecione Data/Hora</string>
+    <string name="device_pin_not_supported">Senha do dispositivo não suportada</string>
+    <string name="login_with_password">Login com Senha do Dispositivo</string>
+    <string name="login_with_fingerprint">Login com Digital</string>
+    <string name="fingerprint_not_supported">Leitor de digital não suportado</string>
+    <string name="facial_auth">Autenticação Facial</string>
+    <string name="use_facial_recognition_for_auth">Use o reconhecimento facial para autenticar</string>
+    <string name="auth_with_device_pin">Autenticação com Senha do Dispositivo</string>
+    <string name="use_pin_pwd_pattern_for_auth">Use PIN, senha ou padrão para autenticar</string>
+    <string name="use_fingerprint_for_auth">Use sua digital para autenticar</string>
+    <string name="disable_mock">Desativar Mock</string>
+    <string name="enable_mock">Ativar Mock</string>
+    <string name="logout">Logout</string>
 </resources>

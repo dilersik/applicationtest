@@ -25,10 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.myapplication.R
 import java.util.Calendar
 
 @Composable
@@ -59,7 +61,7 @@ fun PopOverDateTimePicker(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Select Date & Time",
+                    text = stringResource(R.string.select_date_time),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = primaryColor,
@@ -84,7 +86,7 @@ fun PopOverDateTimePicker(
                         colors = ButtonDefaults.buttonColors(containerColor = primaryColor),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Text("Confirm", color = Color.White)
+                        Text(stringResource(R.string.confirm), color = Color.White)
                     }
 
                     Button(
@@ -92,7 +94,7 @@ fun PopOverDateTimePicker(
                         colors = ButtonDefaults.buttonColors(containerColor = secondaryColor),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Text("Cancel", color = Color.White)
+                        Text(stringResource(R.string.cancel), color = Color.White)
                     }
                 }
             }
@@ -129,7 +131,7 @@ fun DatePicker(minDate: Long?, maxDate: Long?, selectedDate: MutableState<String
     }
 
     Button(onClick = { datePickerDialog.show() }) {
-        Text(text = "Pick Date")
+        Text(text = stringResource(R.string.pick_date))
     }
 }
 
@@ -155,19 +157,6 @@ fun TimePicker(selectedTime: MutableState<String?>) {
     }
 
     Button(onClick = { timePickerDialog.show() }) {
-        Text(text = "Pick Time")
+        Text(text = stringResource(R.string.pick_time))
     }
 }
-
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewPopOverDateTimePicker() {
-//    PopOverDateTimePicker(
-//        showDatePicker = true,
-//        showTimePicker = true,
-//        initialDate = "2025-03-14",
-//        initialTime = "12:00",
-//        onDateTimeSelected = { selectedDateTime -> println(selectedDateTime) }
-//    )
-//}

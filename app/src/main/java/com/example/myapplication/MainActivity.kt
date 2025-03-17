@@ -12,6 +12,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.views.Screen
@@ -44,7 +45,7 @@ fun AppContent(context: Context) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("My App") }
+                title = { Text(stringResource(R.string.my_app)) }
             )
         }
     ) { paddingValues ->
@@ -69,7 +70,7 @@ fun AppContent(context: Context) {
                     run {
                         Toast.makeText(
                             context,
-                            "Selected date time: $selectedDateTime",
+                            context.getString(R.string.selected_date_time, selectedDateTime),
                             Toast.LENGTH_LONG
                         ).show()
                     }
