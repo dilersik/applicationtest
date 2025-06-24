@@ -53,6 +53,11 @@ fun DetailsScreen(
             )
         }
         Text(
+            text = post.name,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+        Text(
             text = post.description,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(vertical = 8.dp)
