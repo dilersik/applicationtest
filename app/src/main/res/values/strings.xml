@@ -27,4 +27,5 @@
     <string name="disable_mock">Desativar Mock</string>
     <string name="enable_mock">Ativar Mock</string>
     <string name="logout">Logout</string>
+    <string name="visit_website">Visit Website</string>
 </resources>

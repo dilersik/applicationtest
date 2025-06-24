@@ -29,7 +29,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMyListRepository(api: Api): PostRepository = PostRepositoryImpl(api)
+    fun provideMyListRepository(api: Api, @ApplicationContext context: Context): PostRepository =
+        PostRepositoryImpl(api, context)
 
     @Provides
     @Singleton

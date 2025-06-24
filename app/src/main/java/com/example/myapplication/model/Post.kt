@@ -1,17 +1,16 @@
 package com.example.myapplication.model
 
+import com.google.gson.annotations.SerializedName
 
-sealed class Post {
-    data class Remote(
-        val id: Int,
-        val title: String,
-        val body: String,
-        val address: String
-    ) : Post()
 
-    data class Mock(
-        val id: Int,
-        val title: String,
-        val body: String,
-    ) : Post()
-}
+data class Post(
+    val name: String,
+    val description: String,
+    val picture: String?, // Nullable since some entries have null
+    val rating: Double,
+    val address: String,
+    val coordinates: List<Double>,
+    @SerializedName("google_maps_link")
+    val googleMapsLink: String,
+    val website: String
+)
