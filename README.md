@@ -1,51 +1,30 @@
-# Take Home Assignment (Android Lead)
+# Desafio Técnico – Desenvolvedor Android Especialista
+Demo: https://github.com/user-attachments/assets/7123275a-6022-4870-a830-ccddaa63b25f
 
-You should supply the code for review and be ready to reference for the follow-up technical interview and be ready to demo their
-code via Screen Share. The purpose of this assignment is to provide us a sample of your code and architecture approach. It
-should be representative of what you would do as a professional level. It should be representative of what you would do as a
-professional during your day to day on the job. Please take the time to review the grading criteria below.
+Download APK: https://github.com/dilersik/applicationtest/blob/main/app-debug.apk
 
-How will I be graded?
-- Solution works.
-- Code is clean, well-written, easy to read and contains documentation.
-- Functionally works and satisfies the requirements below.
-- Clear architecture / Modular architecture is implemented.
-- Thoughtful design and user experience is a plus.
-- Code is unit tested and with UI/SnapshotTests. Other kinds of tests will be considered pluses.
+Objetivo: Criar um aplicativo Android nativo em Kotlin que implemente segurança, uso de sensores, animações e integração com uma API REST. O projeto deve ser bem arquitetado e seguir boas práticas de desenvolvimento.
 
-We incentivize you to perform mindful choices in your software solution and document them in a README, so the evaluators can
-follow your train of thought. If you cannot meet all the requirements (due to time constraints or any other reasons), be sure to
-inform that as well. If you provide a list of things you would pick to implement next if you were to maintain this project for a longtime, that will be taken as a plus.
+Requisitos do Desafio
 
-Take Home Assignment - Local Sake Shops (Android Native)
-For this assignment, you will build a simple app that allows the user to see
-1 A screen with a list of local sake shops and
-2 A details screen for a specific sake shop.
+Sensores e Algoritmo – Geração de UUID Personalizado Criar um identificador único baseado em sensores do dispositivo. Utilizar pelo menos 2 sensores disponíveis (Exemplo: acelerômetro, giroscópio, luz, proximidade) para compor a geração deste identificador. Complementar o UUID com alguma informação específica do hardware (Exemplo: fabricante, modelo, versão do SO). O identificador deve ser único para cada dispositivo e persistente entre execuções do app. O algoritmo de geração deve estar presente na aplicação (não usar os valores obtidos como seed de bibliotecas geradoras de UUID)
 
-Requirements:
-The data is going to be supplied in JSON format.
-The list page should contain items with sake shop names, address, and star ratings.
-Whenever a sake shop from the list is tapped, the user should be directed to the details page of that shop. The details page
-should contain details about the sake shops, including:
-- Shop name.
-- Shop picture.
-- A brief description.
-- A rating in stars.
-- Address (clickable, should open address in a Maps app or browser).
-- A button or link to visit the shop's website in default web browser or in a custom tab.
-  
-Instructions:
-. Build a list page component that displays all items from the supplied JSON data you got together with this assignment.
-. You will be evaluated based on at least some of the following:
-a. Modular Architecture Approach powered by Audi RED / CONFIDENTIAL 
-b. Clean Architecture
-c. Jetpack compose must be used as the native development framework for this assignment.
-i. XML views submission will not be accepted.
-d. Re-usability of your solution (could someone re-implement your solution easily for a different type of data / different API? ).
-e. Good UX and UI will be considered pluses, but you don't need to spend a very long time pixel-perfecting the look and feel
-(we don't expect you to be a designer). Follow material design guidelines and you're good.
-f. Other factors include: any tests included, ui / snapshot tests, component structure, standards, performance and stability,
-etc.
+Segurança – Autenticação com Biometria O app deve exibir uma tela de login com um botão para autenticação por biometria (digital, reconhecimento facial ou outro, conforme suportado pelo dispositivo). Armazenar o estado do login para evitar necessidade de autenticação repetitiva na mesma sessão. Usar o UUID gerado na etapa anterior como identificador do usuário
 
-. Feel free to show off your coding ability by adding any level of appropriate complexity.
-. Include a README that details information about your project, dependencies, setup, and requirements.
+Layout – Animação estilo "DVD Screensaver" Este trecho deve ser exibido para o usuário após o login. Criar um layout onde uma mensagem flutua na tela, mudando de direção ao colidir com as bordas, simulando o famoso efeito de logo de DVD. A mensagem deve se movimentar de forma fluida e mudar de cor ao atingir um canto da tela. A cada X segundos a mensagem deve ser trocada
+
+3.1 - Extra - Eventos Quando o usuário clicar na mensagem, uma nova mensagem deve ser exibida. 3.2 - Extra - Abstração/arquitetura As ultimas 256 mensagens devem ser persistidas na sessão, mesmo que repetidas. Ao fechar o app elas devem ser descartadas; Na persistencia, usar uma estrutura para mensagem obtidas no mock e outra para obtidas na requisição REST. Na estrutura "REST" incluir o endereço utilizado para cada mensagem. Na estrutura "Mock", a propriedade endereço não deve existir. Como no exemplo:
+
+data class Mensagem( @SerializedName("Texto") val Texto: String )
+
+data class Mensagem( @SerializedName("Texto") val Texto: String,
+
+@SerializedName("Endereco") val Endereco: String )
+
+Integração – API REST com Mock Option Integrar o aplicativo com qualquer API REST pública (Exemplo: https://jsonplaceholder.typicode.com). Criar um botão para alternar entre requisições reais e um mock de dados local. As mensagens exibidas no item "3. Layout – Animação estilo "DVD Screensaver"" devem ser obtidas de valores devolvidos na requisição.
+
+PopOver Genérico para Seleção de Data e Hora Criar um componente reutilizável para exibição de um popOver contendo um DatePicker e/ou um TimePicker, permitindo personalização e flexibilidade para diferentes usos no app.
+
+Requisitos do PopOver:
+
+• Personalizável: Deve permitir configurar se exibirá apenas o DatePicker, apenas o TimePicker ou ambos (pelo menos um deve ser obrigatório). • Valores Padrão: Deve aceitar valores default de data e hora. • Range de Seleção: Caso o DatePicker seja ativado, permitir definir um intervalo mínimo e máximo de datas selecionáveis. • Cores Customizáveis: Deve ser possível personalizar cores principais do componente. • Retorno dos Dados: O Fragment que chamar o popOver deve receber os valores selecionados via um callback ou ViewModel compartilhado. • Suporte a Valores Nulos: Se o TimePicker ou DatePicker não for exibido, o valor retornado para esse campo deve ser null.
