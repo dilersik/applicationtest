@@ -1,5 +1,8 @@
 # Take Home Assignment (Android Lead)
 
+<img width="1080" height="2340" alt="img" src="https://github.com/user-attachments/assets/a4efbc95-3179-4f53-9d03-64b5c9110e63" />
+<img width="1080" height="2340" alt="img_1" src="https://github.com/user-attachments/assets/44544130-6fe2-4b0c-8a4a-52855420ec0f" />
+
 You should supply the code for review and be ready to reference for the follow-up technical interview and be ready to demo their
 code via Screen Share. The purpose of this assignment is to provide us a sample of your code and architecture approach. It
 should be representative of what you would do as a professional level. It should be representative of what you would do as a
