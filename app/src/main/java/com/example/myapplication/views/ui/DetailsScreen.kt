@@ -19,12 +19,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.myapplication.R
 import com.example.myapplication.model.Post
 import com.example.myapplication.views.viewModel.MainViewModel
@@ -42,14 +45,20 @@ fun DetailsScreen(
             text = post.name,
             style = MaterialTheme.typography.headlineSmall
         )
-        post.picture?.let {
+        post.picture?.let { url ->
             AsyncImage(
-                model = it,
+                model = ImageRequest.Builder(context)
+                    .data(url)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
-                    .padding(top = 8.dp)
+                    .padding(top = 8.dp),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.placeholder), // optional
+                error = painterResource(R.drawable.image_error) // optional
             )
         }
         Text(

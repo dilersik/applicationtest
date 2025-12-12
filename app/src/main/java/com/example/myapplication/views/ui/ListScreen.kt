@@ -63,7 +63,7 @@ fun ListScreen(viewModel: MainViewModel, paddingValues: PaddingValues) {
                                 color = Color.Black
                             )
                             Text(
-                                text = item.address,
+                                text = item.description,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Color.DarkGray
                             )
