@@ -10,9 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class TaskRepositoryImpl @Inject constructor(
+open class TaskRepositoryImpl @Inject constructor(
     private val taskDao: TaskDao,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val forceNetworkSuccess: Boolean? = null
 ) : TaskRepository {
 
     override fun getAll(): Flow<List<TaskEntity>> {
@@ -43,12 +44,12 @@ class TaskRepositoryImpl @Inject constructor(
         }
 
     private suspend fun simulateNetworkCall() {
-        // Random delay between 0.5s and 2.5s
-        val delayTime = (500L..2500L).random()
-        delay(delayTime)
+        val success = forceNetworkSuccess ?: run {
+            val delayTime = (500L..2500L).random()
+            delay(delayTime)
+            (1..100).random() <= 75
+        }
 
-        // 75% success rate
-        val success = (1..100).random() <= 75
         if (!success) {
             throw Exception("Network request failed")
         }
