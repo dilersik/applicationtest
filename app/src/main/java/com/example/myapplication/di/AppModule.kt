@@ -1,11 +1,12 @@
 package com.example.myapplication.di
 
 import android.content.Context
-import android.content.SharedPreferences
+import androidx.room.Room
 import com.example.myapplication.api.Api
-import com.example.myapplication.repository.PostRepository
-import com.example.myapplication.repository.PostRepositoryImpl
-import com.example.myapplication.utils.EncryptionUtils
+import com.example.myapplication.repository.database.AppDatabase
+import com.example.myapplication.repository.TaskRepository
+import com.example.myapplication.repository.TaskRepositoryImpl
+import com.example.myapplication.repository.database.TaskDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,16 +30,23 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMyListRepository(api: Api, @ApplicationContext context: Context): PostRepository =
-        PostRepositoryImpl(api, context)
+    fun provideTaskRepository(taskDao: TaskDao): TaskRepository = TaskRepositoryImpl(taskDao)
 
     @Provides
     @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("myApp", Context.MODE_PRIVATE)
+    fun provideDatabase(
+        @ApplicationContext context: Context
+    ): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "my_database"
+        ).build()
     }
 
     @Provides
     @Singleton
-    fun provideEncryptionUtils(): EncryptionUtils = EncryptionUtils()
+    fun providePostDao(database: AppDatabase): TaskDao {
+        return database.taskDao()
+    }
 }

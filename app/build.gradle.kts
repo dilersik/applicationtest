@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.daggerHilt)
-    kotlin("kapt") version "1.9.0"
-    kotlin("plugin.serialization") version "1.9.24"
+    alias(libs.plugins.kotlinSerialization)
+    kotlin("kapt")
 }
 
 android {
@@ -53,6 +53,12 @@ dependencies {
 
     // ViewModel
     implementation(libs.lifecycle.viewmodel.compose)
+
+    // google room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
@@ -62,7 +68,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.runtime)
     // Hilt
     implementation(libs.hilt.android)
-    implementation(libs.firebase.crashlytics.buildtools)
 //    implementation(libs.androidx.security.crypto.ktx)
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.biometric.ktx)
@@ -82,6 +87,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.foundation)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.coil.compose)
     implementation(libs.androidx.ui)

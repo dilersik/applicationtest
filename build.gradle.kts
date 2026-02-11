@@ -3,6 +3,4 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
     alias(libs.plugins.daggerHilt) apply false
-    kotlin("kapt") version "1.9.0"
-    kotlin("plugin.serialization") version "1.9.24"
 }
